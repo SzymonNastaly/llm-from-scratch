@@ -6,7 +6,7 @@ class BPETokenizer:
         self.stoi = {}
         self.itos = {}
         self.merges = {}
-        self.pattern = r"['’‘]s|['’‘]t|['’‘]re|['’‘]re|['’‘]ve|['’‘]m|['’‘]ll|['’‘]d | ?[^\W\d_]+| ?\d+| ?[^\w\s\d]+"
+        self.pattern = r"['’‘]s|['’‘]t|['’‘]re|['’‘]re|['’‘]ve|['’‘]m|['’‘]ll|['’‘]d | ?[^\W\d_]+| ?\d+| ?[^\w\s\d]+|\s+(?!\S)|\s+"
 
     def train(self, text, target_vocab_size):
         vocab = BPETokenizer._list_of_unique_characters(text) # not updated anymore, only initial
@@ -60,14 +60,14 @@ class BPETokenizer:
                 if best_merge not in self.merges:
                     break
                 new_chunk = BPETokenizer._merge_pair(chunk,best_merge, self.merges[best_merge])
-                tokenized_text.append(new_chunk)
                 chunk = new_chunk
+            tokenized_text.append(chunk)
 
         return tokenized_text
         
 
     def decode(self, token_ids):
-        text = [([self.itos[tok] for tok in chunk]) for chunk in token_ids]
+        text = "".join(["".join([self.itos[tok] for tok in chunk]) for chunk in token_ids])
         return text
 
     def _merge_pair(token_ids, pair, new_token_id):
