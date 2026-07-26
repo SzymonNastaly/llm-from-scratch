@@ -41,7 +41,7 @@ class DataLoader:
         self.indices = list(range(len(self.dataset)))
 
     def __len__(self):
-        return len(self.indices)//self.batch_size
+        return len(self.indices) // self.batch_size
         
     def __iter__(self):
         if self.shuffle:

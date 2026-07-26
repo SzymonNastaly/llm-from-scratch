@@ -12,7 +12,10 @@ class BPETokenizer:
         vocab = BPETokenizer._list_of_unique_characters(text) # not updated anymore, only initial
         self.stoi = {token: integer_id for integer_id, token in enumerate(vocab)}
         self.itos = {integer_id: token for integer_id, token in enumerate(vocab)}
-        number_merges_needed = target_vocab_size - len(vocab)
+        special_tokens = ["<|eos|>"]
+
+        assert target_vocab_size >= len(vocab) + len(special_tokens)
+        number_merges_needed = target_vocab_size - len(vocab) - len(special_tokens)
         # token_ids = [self.stoi[char] for char in text]
 
         preprocessed_text = re.findall(self.pattern, text)
@@ -40,7 +43,6 @@ class BPETokenizer:
                 new_token_ids.append(BPETokenizer._merge_pair(chunk,best_pair,new_token_id))
             token_ids = new_token_ids
 
-        special_tokens = ["<|eos|>"]
         for st in special_tokens:
             new_id = len(self.stoi)
             self.stoi[st] = new_id
