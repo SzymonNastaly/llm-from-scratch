@@ -33,7 +33,7 @@ class Dataset:
         return self.inputs[i],self.targets[i]
 
 class DataLoader:
-    def __init__(self, dataset, batch_size, shuffle):
+    def __init__(self, dataset, batch_size, shuffle=True):
         self.dataset = dataset
         self.batch_size = batch_size
         self.shuffle = shuffle
