@@ -61,13 +61,13 @@ class BPETokenizer:
                     break
                 new_chunk = BPETokenizer._merge_pair(chunk,best_merge, self.merges[best_merge])
                 chunk = new_chunk
-            tokenized_text.append(chunk)
+            tokenized_text.extend(chunk)
 
         return tokenized_text
         
 
     def decode(self, token_ids):
-        text = "".join(["".join([self.itos[tok] for tok in chunk]) for chunk in token_ids])
+        text = "".join([self.itos[tok] for tok in token_ids])
         return text
 
     def _merge_pair(token_ids, pair, new_token_id):
